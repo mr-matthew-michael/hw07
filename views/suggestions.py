@@ -10,9 +10,10 @@ class SuggestionsListEndpoint(Resource):
         self.current_user = current_user
     
     def get(self):
-        # suggestions should be any user with an ID that's not in this list:
-        # print(get_authorized_user_ids(self.current_user))
-        return Response(json.dumps([]), mimetype="application/json", status=200)
+        authorized_user_ids = get_authorized_user_ids(self.current_user)
+        suggestions = User.query.filter(User.id.notin_(authorized_user_ids)).limit(7).all()
+        suggestions_data = [suggestion.to_dict() for suggestion in suggestions]
+        return Response(json.dumps(suggestions_data), mimetype="application/json", status=200)
 
 
 def initialize_routes(api):

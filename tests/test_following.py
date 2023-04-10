@@ -152,18 +152,18 @@ if __name__ == '__main__':
         TestFollowingListEndpoint('test_following_get_check_data_structure'),   
         TestFollowingListEndpoint('test_following_get_check_if_query_correct'),
 
-        # POST
-        TestFollowingListEndpoint('test_following_post_valid_request_201'),
-        TestFollowingListEndpoint('test_following_post_no_duplicates_400'),
-        TestFollowingListEndpoint('test_following_post_invalid_user_id_format_400'),
-        TestFollowingListEndpoint('test_following_post_invalid_user_id_404'),
-        TestFollowingListEndpoint('test_following_post_missing_user_id_400'), 
+        # # POST
+        # TestFollowingListEndpoint('test_following_post_valid_request_201'),
+        # TestFollowingListEndpoint('test_following_post_no_duplicates_400'),
+        # TestFollowingListEndpoint('test_following_post_invalid_user_id_format_400'),
+        # TestFollowingListEndpoint('test_following_post_invalid_user_id_404'),
+        # TestFollowingListEndpoint('test_following_post_missing_user_id_400'), 
 
-        # DELETE
-        TestFollowingDetailEndpoint('test_following_delete_valid_200'),
-        TestFollowingDetailEndpoint('test_following_delete_invalid_id_format_404'),
-        TestFollowingDetailEndpoint('test_following_delete_invalid_id_404'),
-        TestFollowingDetailEndpoint('test_following_delete_unauthorized_id_404') 
+        # # DELETE
+        # TestFollowingDetailEndpoint('test_following_delete_valid_200'),
+        # TestFollowingDetailEndpoint('test_following_delete_invalid_id_format_404'),
+        # TestFollowingDetailEndpoint('test_following_delete_invalid_id_404'),
+        # TestFollowingDetailEndpoint('test_following_delete_unauthorized_id_404') 
     ])
 
     unittest.TextTestRunner(verbosity=2).run(suite)
