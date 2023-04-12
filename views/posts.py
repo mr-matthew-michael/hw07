@@ -65,8 +65,25 @@ class PostDetailEndpoint(Resource):
     def patch(self, id):
         # update post based on the data posted in the body 
         body = request.get_json()
-        print('patch', body)       
-        return Response(json.dumps({}), mimetype="application/json", status=200)
+        print(body)       
+        post = Post.query.get(id)
+        if post is None or post.user_id != self.current_user.id:
+            error_message = {
+                'error': 'post {0} does not exist.'.format(id)
+            }
+            return Response(json.dumps(error_message), mimetype="application/json", status=404)
+        else:
+            if(body.get('image_url')):
+                post.image_url = body.get('image_url')
+            if(body.get('caption')):
+                post.caption = body.get('caption')
+            if(body.get('alt_text')):
+                post.alt_text = body.get('alt_text')
+
+            db.session.commit()         # commits the change to the database and returns the id
+
+            print(post.to_dict())
+            return Response(json.dumps(post.to_dict()), mimetype="application/json", status=200)
 
 
     def delete(self, id):
