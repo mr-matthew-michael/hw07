@@ -87,9 +87,18 @@ class PostDetailEndpoint(Resource):
 
 
     def delete(self, id):
-        # delete post where "id"=id
-        return Response(json.dumps({}), mimetype="application/json", status=200)
-
+        post = Post.query.get(id)
+        post2 = Post.query.filter_by(id=id)
+        user_ids = get_user_ids(self.current_user.id)
+        if  post is None or post.user_id not in user_ids:
+            error_message = {
+                'error': 'post {0} does not exist.'.format(id)
+            }
+            return Response(json.dumps(error_message), mimetype="application/json", status=404)
+        else:
+            post2.delete()
+            db.session.commit()
+            return Response(json.dumps({'message': 'Post deleted.'}), mimetype="application/json", status=200)
 
     def get(self, id):
         # get the post based on the id
