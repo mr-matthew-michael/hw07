@@ -9,10 +9,25 @@ class CommentListEndpoint(Resource):
         self.current_user = current_user
     
     def post(self):
-        # create a new "Comment" based on the data posted in the body 
+        # create a new post based on the data posted in the body 
         body = request.get_json()
-        print(body)
-        return Response(json.dumps({}), mimetype="application/json", status=201)
+        # print(body)
+        if not body.get('post_id'):
+            return Response(
+                json.dumps({'error': 'No post_id provided.'}), status=400
+            )
+        # 1. Create:
+        new_post = Comment(
+            post_id = body.get('post_id'),
+            text = body.get('text'),
+            user_id=self.current_user.id
+        )
+        
+        print(new_post)
+        db.session.add(new_post)    # issues the insert statement
+        db.session.commit()         # commits the change to the database and returns the id
+
+        return Response(json.dumps(new_post.to_dict()), mimetype="application/json", status=201)
         
 class CommentDetailEndpoint(Resource):
 
