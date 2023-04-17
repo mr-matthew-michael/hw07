@@ -116,15 +116,15 @@ if __name__ == '__main__':
         # POST Tests:
         TestCommentListEndpoint('test_comment_post_valid_request_201'),
         TestCommentListEndpoint('test_comment_post_invalid_post_id_format_400'),
-        # TestCommentListEndpoint('test_comment_post_invalid_post_id_404'),
-        # TestCommentListEndpoint('test_comment_post_unauthorized_post_id_404'),
-        # TestCommentListEndpoint('test_comment_post_missing_text_400'),
+        TestCommentListEndpoint('test_comment_post_invalid_post_id_404'),
+        TestCommentListEndpoint('test_comment_post_unauthorized_post_id_404'),
+        TestCommentListEndpoint('test_comment_post_missing_text_400'),
 
         # # DELETE Tests:
-        # TestCommentDetailEndpoint('test_comment_delete_valid_200'),
-        # TestCommentDetailEndpoint('test_comment_delete_invalid_id_format_404'),
-        # TestCommentDetailEndpoint('test_comment_delete_invalid_id_404'),
-        # TestCommentDetailEndpoint('test_comment_delete_unauthorized_id_404'),
+        TestCommentDetailEndpoint('test_comment_delete_valid_200'),
+        TestCommentDetailEndpoint('test_comment_delete_invalid_id_format_404'),
+        TestCommentDetailEndpoint('test_comment_delete_invalid_id_404'),
+        TestCommentDetailEndpoint('test_comment_delete_unauthorized_id_404'),
         
     ])
 
