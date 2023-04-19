@@ -153,7 +153,7 @@ if __name__ == '__main__':
         TestFollowingListEndpoint('test_following_get_check_if_query_correct'),
 
         # # POST
-        # TestFollowingListEndpoint('test_following_post_valid_request_201'),
+        TestFollowingListEndpoint('test_following_post_valid_request_201'),
         # TestFollowingListEndpoint('test_following_post_no_duplicates_400'),
         # TestFollowingListEndpoint('test_following_post_invalid_user_id_format_400'),
         # TestFollowingListEndpoint('test_following_post_invalid_user_id_404'),

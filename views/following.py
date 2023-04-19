@@ -17,10 +17,41 @@ class FollowingListEndpoint(Resource):
         return Response(json.dumps(following_list), mimetype="application/json", status=200)
 
     def post(self):
-        # create a new "following" record based on the data posted in the body 
+            # create a new "bookmark" based on the data posted in the body 
         body = request.get_json()
         print(body)
-        return Response(json.dumps({}), mimetype="application/json", status=201)
+        post_id = body.get('user_id')
+        
+        if post_id is None:
+            return Response(
+                json.dumps({'error': 'No post_id provided.'}), status=400
+            )
+        try:
+            post_id = int(post_id)
+        except ValueError:
+            return Response(
+                json.dumps({'error': 'Invalid post_id format.'}), status=400
+            )
+        # check if post with post_id exists
+        bookmarks = Following.query.filter_by(user_id=self.current_user.id).all()
+        if post_id in [bookmark.post_id for bookmark in bookmarks]:
+            return Response(json.dumps({'error': 'Bookmark already exists.'}), status=400)
+        
+        post = Following.query.get(post_id)
+        
+        if post is None :
+            error_message = {
+                'error': 'post {0} does not exist.'.format(id)
+            }
+            return Response(json.dumps(error_message), mimetype="application/json", status=404)
+    
+        # create a new bookmark
+        new_bookmark = Following(user_id=post_id)
+        db.session.add(new_bookmark)
+        db.session.commit()
+    
+        # return the newly created bookmark
+        return Response(json.dumps(new_bookmark.to_dict()), mimetype="application/json", status=201)
 
 class FollowingDetailEndpoint(Resource):
     def __init__(self, current_user):
