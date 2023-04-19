@@ -16,42 +16,20 @@ class FollowingListEndpoint(Resource):
         following_list = [those_following.to_dict_following() for those_following in following]
         return Response(json.dumps(following_list), mimetype="application/json", status=200)
 
-    def post(self):
-            # create a new "bookmark" based on the data posted in the body 
+    def post(self): 
         body = request.get_json()
         print(body)
         post_id = body.get('user_id')
-        
-        if post_id is None:
-            return Response(
-                json.dumps({'error': 'No post_id provided.'}), status=400
-            )
-        try:
-            post_id = int(post_id)
-        except ValueError:
-            return Response(
-                json.dumps({'error': 'Invalid post_id format.'}), status=400
-            )
-        # check if post with post_id exists
-        bookmarks = Following.query.filter_by(user_id=self.current_user.id).all()
-        if post_id in [bookmark.post_id for bookmark in bookmarks]:
-            return Response(json.dumps({'error': 'Bookmark already exists.'}), status=400)
-        
-        post = Following.query.get(post_id)
-        
-        if post is None :
-            error_message = {
-                'error': 'post {0} does not exist.'.format(id)
-            }
-            return Response(json.dumps(error_message), mimetype="application/json", status=404)
     
         # create a new bookmark
-        new_bookmark = Following(user_id=post_id)
-        db.session.add(new_bookmark)
+        new_following = Following(
+            following_id = post_id,
+            user_id = self.current_user.id, 
+        )
+        db.session.add(new_following)
         db.session.commit()
-    
-        # return the newly created bookmark
-        return Response(json.dumps(new_bookmark.to_dict()), mimetype="application/json", status=201)
+
+        return Response(json.dumps(new_following.to_dict_following()), mimetype="application/json", status=201)
 
 class FollowingDetailEndpoint(Resource):
     def __init__(self, current_user):
@@ -61,9 +39,6 @@ class FollowingDetailEndpoint(Resource):
         # delete "following" record where "id"=id
         print(id)
         return Response(json.dumps({}), mimetype="application/json", status=200)
-
-
-
 
 def initialize_routes(api):
     api.add_resource(

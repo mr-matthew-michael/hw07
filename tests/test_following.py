@@ -154,7 +154,7 @@ if __name__ == '__main__':
 
         # # POST
         TestFollowingListEndpoint('test_following_post_valid_request_201'),
-        # TestFollowingListEndpoint('test_following_post_no_duplicates_400'),
+        TestFollowingListEndpoint('test_following_post_no_duplicates_400'),
         # TestFollowingListEndpoint('test_following_post_invalid_user_id_format_400'),
         # TestFollowingListEndpoint('test_following_post_invalid_user_id_404'),
         # TestFollowingListEndpoint('test_following_post_missing_user_id_400'), 
