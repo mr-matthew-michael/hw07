@@ -1,7 +1,13 @@
 from flask import Response, request
 from flask_restful import Resource
-from models import Bookmark, db
+from models import Bookmark, Following, Post, db
 import json
+
+def get_user_ids(user_id):
+    following = Following.query.filter_by(user_id=user_id).all()
+    user_ids = [rec.following_id for rec in following]
+    user_ids.append(user_id)
+    return user_ids
 
 class BookmarksListEndpoint(Resource):
 
@@ -30,6 +36,15 @@ class BookmarksListEndpoint(Resource):
             return Response(
                 json.dumps({'error': 'Invalid post_id format.'}), status=400
             )
+        
+        list_of_user_ids = get_user_ids(self.current_user.id)
+        post = Post.query.get(post_id)
+
+        if post is None or post.user_id not in list_of_user_ids:
+            error_message = {
+                'error': 'post {0} does not exist.'.format(post_id)
+            }
+            return Response(json.dumps(error_message), mimetype="application/json", status=404)
         # check if post with post_id exists
         bookmarks = Bookmark.query.filter_by(user_id=self.current_user.id).all()
         if post_id in [bookmark.post_id for bookmark in bookmarks]:

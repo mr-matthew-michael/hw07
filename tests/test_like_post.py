@@ -54,7 +54,7 @@ class TestLikePostListEndpoint(unittest.TestCase):
         post = utils.get_post_that_user_cannot_access(self.current_user.get('id'))
         url = '{0}/api/posts/likes'.format(root_url)
         response = requests.post(url, json={'post_id': post.get('id')})
-        # print(response.text)
+        print(response.text)
         self.assertEqual(response.status_code, 404)
 
     
@@ -121,7 +121,7 @@ if __name__ == '__main__':
         TestLikePostListEndpoint('test_like_post_no_duplicates_400'),
         TestLikePostListEndpoint('test_like_post_invalid_post_id_format_400'),
         TestLikePostListEndpoint('test_like_post_invalid_post_id_404'),
-        # TestLikePostListEndpoint('test_like_post_unauthorized_post_id_404'),
+        TestLikePostListEndpoint('test_like_post_unauthorized_post_id_404'),
 
         # # # DELETE Tests:
         TestLikePostDetailEndpoint('test_like_post_delete_valid_200'),
